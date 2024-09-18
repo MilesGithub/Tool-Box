@@ -16,12 +16,6 @@ lm_model <- lm(gene_expr ~ age + treatment, data = gene_data)
 # Summary of the linear model
 summary(lm_model)
 
-
-# Output explained:
-# Call:
-# This part confirms the model formula used.
-# lm(formula = gene_expr ~ age + treatment, data = gene_data)
-
 # Residuals:
 # These show the distribution of residuals (the difference between observed and predicted values).
 # Ideally, residuals should be symmetrically distributed around 0.
