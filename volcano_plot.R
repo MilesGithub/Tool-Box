@@ -9,12 +9,20 @@ data$neg_log <- -log(data$pvalue)
 fold_change_threshold <- 1
 pvalue_threshold <- 0.05
 
+x_axis_min<-0
+x_axis_max<-10
+x_axis_breaks<-1
+
+y_axis_min<-0
+y_axis_max<-10
+y_axis_breaks<-1
+
 p1<-ggplot(data, aes(x = logFC, y = neg_log)) +
   geom_point(aes(color = (abs(logFC) > fold_change_threshold) & (pvalue < pvalue_threshold)), size = 2) +
   scale_color_manual(values = c("FALSE" = "grey", "TRUE" = "#1a1a1a")) +
   labs(title = "Volcano Plot", x = "Log2 Fold Change", y = "-Log P-value") +
-  scale_y_continuous(breaks = seq(0, 8, by = 1)) +
-  scale_x_continuous(breaks = seq(-10, 10, by = 1)) +
+  scale_y_continuous(limits = c(y_axis_min, y_axis_max), breaks = seq(y_axis_min, y_axis_max, by = y_axis_breaks)) +
+  scale_y_continuous(limits = c(x_axis_min, x_axis_max), breaks = seq(x_axis_min, x_axis_max, by = x_axis_breaks)) +
   geom_vline(xintercept = 0, linetype = "dashed") +
   geom_vline(xintercept = c(-fold_change_threshold, fold_change_threshold), linetype = "dashed") +
   geom_hline(yintercept = 3, linetype = "dashed") +
