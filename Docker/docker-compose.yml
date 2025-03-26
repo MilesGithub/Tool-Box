@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  pharma-app:
+    build: .
+    container_name: pharma-analysis
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - LOG_FILE=logs/app.log
+    restart: unless-stopped

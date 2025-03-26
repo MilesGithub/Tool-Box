@@ -1,0 +1,5 @@
+trial_id,drug_name,phase,status,total_patients,successful_outcomes
+101,Test Small Molecule 01,Phase 3,Completed,100,85
+102,Test Small Molecule 02,Phase 2,Ongoing,80,50
+103,Test Monoclonal Antibody 01,Phase 3,Completed,120,90
+104,Test Monoclonal Antibody 02,Phase 1,Terminated,50,10
