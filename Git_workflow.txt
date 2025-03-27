@@ -1,0 +1,112 @@
+# 1: Initialize Repository
+git init example-project
+cd example-project
+
+# 2: Initial Commit
+echo "Project Start" > app.txt
+git add app.txt
+git commit -m "Initial commit: Project structure"
+
+# 3: Create develop branch
+git checkout -b develop
+echo "Base functionality" >> app.txt
+git add app.txt
+git commit -m "Added base functionality"
+
+# 4: Two developers working on different features
+git checkout -b feature/auth-system
+echo "User Authentication Module" >> app.txt
+git add app.txt
+git commit -m "Started authentication system"
+
+git checkout develop
+git checkout -b feature/processing-system
+echo "Processing logic" >> app.txt
+git add app.txt
+git commit -m "Implemented initial processing logic"
+
+# 5: Merging Feature Branches
+git checkout develop
+git merge --no-ff feature/auth-system -m "Merged authentication system"
+git merge --no-ff feature/processing-system -m "Merged processing system"
+
+# 6: Introduce a bug accidentally
+echo "Buggy processing logic" >> app.txt
+git add app.txt
+git commit -m "MISTAKE Introduced a bug"
+
+# 7: Revert the buggy commit
+git revert HEAD  # This keeps history clean but undoes the change
+
+# 8: Create a Release Branch
+git checkout -b release/1.0.0
+echo "Finalizing for release" >> app.txt
+git add app.txt
+git commit -m "Release preparations"
+
+# 9: Squash multiple commits before merging to main
+git rebase -i HEAD~3  # Squash commits in release branch (interactive rebase)
+git checkout main
+git merge --no-ff release/1.0.0 -m "Released version 1.0.0"
+git tag -a v1.0.0 -m "Stable Release 1.0.0"
+git push origin main --tags
+
+# 10: Hotfix for Production Issue
+git checkout -b hotfix/fix-login main
+echo "Fixed login issue" >> app.txt
+git add app.txt
+git commit -m "Hotfix: Login issue fixed"
+
+# Merge hotfix back to main and develop
+git checkout main
+git merge --no-ff hotfix/fix-login -m "Merged hotfix into main"
+git checkout develop
+git merge --no-ff hotfix/fix-login -m "Merged hotfix into develop"
+
+# 11: Feature Branch Rebasing (Keeping Feature Up to Date)
+git checkout -b feature/reporting-system
+echo "Initial reporting system" >> app.txt
+git add app.txt
+git commit -m "Started reporting module"
+
+# Rebasing feature branch with develop to stay up to date
+git checkout develop
+git pull origin develop  # Ensure latest develop
+git checkout feature/reporting-system
+git rebase develop  # Replay changes on top of latest develop
+
+# 12: Cherry-Picking a Commit from Another Branch
+git checkout develop
+git checkout -b feature/integration
+echo "Added integration feature" >> app.txt
+git add app.txt
+git commit -m "Implemented integration feature"
+
+# MISTAKE We need the integration logic in reporting system too
+git checkout feature/reporting-system
+git cherry-pick feature/integration  # Only apply the integration commit
+
+# 13: Accidental Push Fix (Undo a Pushed Commit)
+git checkout main
+echo "BAD CODE!" >> app.txt
+git add app.txt
+git commit -m "Bad commit pushed"
+git push origin main
+
+# MISTAKE Need to undo without rewriting history (since it's already pushed)
+git revert HEAD
+git push origin main
+
+# 14: Complete Catastrophic Failure - Rollback to a Stable Release
+git checkout main
+git reset --hard v1.0.0  # Rollback to stable version
+git push origin main --force  # Push the rollback (Use with caution!)
+
+# Cleanup: Delete Merged Feature and Hotfix Branches
+git branch -d feature/auth-system
+git branch -d feature/payment-system
+git branch -d feature/reporting-system
+git branch -d feature/ai-integration
+git branch -d hotfix/fix-login
+git branch -d release/1.0.0
+git push origin --delete feature/auth-system feature/payment-system feature/reporting-system feature/ai-integration hotfix/fix-login release/1.0.0
